@@ -345,7 +345,7 @@ export default class app extends Component {
 ##### boolean or function that return boolean
 ``` javascript
 import React,{Component} from "react";
-import RLayout from './r-layout';
+import RLayout from 'r-layout';
 import './style.css'
 export default class app extends Component {
   render(){
@@ -377,11 +377,89 @@ export default class app extends Component {
     )
   }
 }
+```
 
+[![alt text](/images/10.jpg)]
 
-
+### handle Complexity by get child from functions
+``` javascript
+import React,{Component} from "react";
+import RLayout from 'r-layout';
+import './style.css'
+export default class app extends Component {
+  state = {
+    list1:[
+      {title:'item1'},
+      {title:'item2'},
+      {title:'item3'},
+      {title:'item4'},
+      {title:'item5'},
+      {title:'item6'},
+      {title:'item7'},
+      {title:'item8'},
+      {title:'item9'},
+      {title:'item10'},
+      {title:'item11'},
+      {title:'item12'},
+      {title:'item13'},
+      {title:'item14'},
+      {title:'item15'},
+      {title:'item16'},
+      {title:'item17'},
+      {title:'item18'},
+      {title:'item19'},
+    ],
+    list2:[]
+  }
+  getList(listName){
+    return {
+      gap:0,attrs:{className:'panel',},
+      column:this.state[listName].map((o,index)=>{
+        return {
+          html:o.title,size:36,
+          attrs:{
+            className:'item',
+            onClick:()=>{
+              let currentList = this.state[listName];
+              let otherList = this.state[listName === 'list1'?'list2':'list1'];
+              otherList.push(o);
+              currentList.splice(index,1);
+              this.setState({[listName]:currentList});
+            }
+          }
+        }
+      })
+    }
+  }
+  render(){
+    return (
+      <RLayout
+        layout={{
+          attrs:{className:'container',style:{padding:12,boxSizing:'border-box'}},
+          column:[ 
+            {
+              size:72,
+              childsAttrs:{className:'panel'},
+              row:[
+                {html:'a'},
+                {html:'b'},
+                {html:'c'},
+              ]
+            },
+            {
+              row:[
+                this.getList('list1'),
+                this.getList('list2'),
+              ]
+            }
+          ]
+        }}
+      />
+    )
+  }
+}
 
 
 ```
 
-[![alt text](/images/10.jpg)]
+[![alt text](/images/11.gif)]
