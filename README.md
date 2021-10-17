@@ -338,3 +338,50 @@ export default class app extends Component {
 ```
 
 [![alt text](/images/9.gif)]
+
+
+### show
+##### set false to prevent show child
+##### boolean or function that return boolean
+``` javascript
+import React,{Component} from "react";
+import RLayout from './r-layout';
+import './style.css'
+export default class app extends Component {
+  render(){
+    return (
+      <RLayout
+        layout={{
+          attrs:{className:'container'},
+          row:[
+            {
+              childsAttrs:{className:'panel'},
+              column:[
+                {html:'a1'},
+                {html:'a2',show:()=>false},//see here . show type function
+                {html:'a3'},
+              ]
+            },
+            {html:'b',attrs:{className:'panel'}},
+            {
+              childsAttrs:{className:'panel'},
+              column:[
+                {html:'c1'},
+                {html:'c2',show:false}, // see here . show type boolean
+                {html:'c3'}, 
+              ]
+            },
+          ]
+        }}
+      />
+    )
+  }
+}
+
+
+
+
+
+```
+
+[![alt text](/images/10.gif)]
