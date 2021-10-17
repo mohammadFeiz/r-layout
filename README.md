@@ -290,3 +290,51 @@ export default class app extends Component {
 ```
 
 [![alt text](/images/8.jpg)]
+
+### onResize
+##### resize child by mouse
+##### in this case size of child should store in state and onResize function change it
+``` javascript
+import React,{Component} from "react";
+import RLayout from 'r-layout';
+import './style.css'
+export default class app extends Component {
+  state = {size1:100}; //see here
+  render(){
+    let {size1} = this.state; //see here
+    return (
+      <RLayout
+        layout={{
+          attrs:{className:'container'},
+          row:[
+            {
+              size:size1, // see here
+              onResize:(value)=>this.setState({size1:value}), //see here
+              childsAttrs:{className:'panel'},
+              column:[
+                {html:'a1'},
+                {html:'a2'},
+                {html:'a3'},
+              ]
+            },
+            {html:'b',attrs:{className:'panel'}},
+            {
+              childsAttrs:{className:'panel'},
+              column:[
+                {html:'c1'},
+                {html:'c2'},
+                {html:'c3'}, 
+              ]
+            },
+          ]
+        }}
+      />
+    )
+  }
+}
+
+
+
+```
+
+[![alt text](/images/9.gif)]
