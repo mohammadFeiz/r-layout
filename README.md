@@ -23,7 +23,7 @@ export default class app extends Component {
 }
 ```
 
-# image1
+[![alt text](/images/1.jpg)]
 
 ### column
 ##### set vertical layout
