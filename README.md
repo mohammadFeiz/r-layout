@@ -49,7 +49,7 @@ export default class app extends Component {
   }
 }
 ```
-# image2
+[![alt text](/images/2.jpg)]
 
 ### childsAttrs
 ##### set childsAttrs in parent as set attrs property of childs
@@ -76,7 +76,7 @@ export default class app extends Component {
 }
 ```
 
-# image1
+[![alt text](/images/1.jpg)]
 
 ### size
 ##### set specific size on childs
@@ -103,7 +103,7 @@ export default class app extends Component {
 }
 ```
 
-# image3
+[![alt text](/images/3.jpg)]
 
 ### flex
 ##### set specific flex on childs
@@ -120,7 +120,7 @@ export default class app extends Component {
           attrs:{className:'container'},
           childsAttrs:{className:'panel'},
           row:[
-            {html:'a',flex:48},//see here
+            {html:'a',flex:2},//see here
             {html:'b'},
             {html:'c'}, 
           ]
@@ -131,7 +131,7 @@ export default class app extends Component {
 }
 ```
 
-# image4
+[![alt text](/images/4.jpg)]
 
 
 ### flex:'none'
@@ -159,7 +159,7 @@ export default class app extends Component {
 }
 ```
 
-# image5
+[![alt text](/images/5.jpg)]
 
 ### nested layout
 ##### each child can get own layout 
@@ -201,7 +201,7 @@ export default class app extends Component {
 
 ```
 
-# image6
+[![alt text](/images/6.jpg)]
 
 ### gap
 ##### space between childs
@@ -245,7 +245,7 @@ export default class app extends Component {
 
 ```
 
-# image7
+[![alt text](/images/7.jpg)]
 
 ### overwrite gap
 ##### each child can get own gap
@@ -289,4 +289,4 @@ export default class app extends Component {
 
 ```
 
-# image8
+[![alt text](/images/8.jpg)]
