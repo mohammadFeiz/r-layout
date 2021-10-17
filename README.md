@@ -384,4 +384,4 @@ export default class app extends Component {
 
 ```
 
-[![alt text](/images/10.gif)]
+[![alt text](/images/10.jpg)]
