@@ -122,8 +122,8 @@ export default class app extends Component {
           childsAttrs:{className:'panel'},
           row:[
             {html:'a',size:48},//see here
-            {html:'b'},
-            {html:'c'}, 
+            {html:'b',flex:1},
+            {html:'c',flex:1}, 
           ]
         }}
       />
