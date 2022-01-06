@@ -146,12 +146,13 @@ export default class app extends Component {
     return (
       <RLayout
         layout={{
+          gap:12,
           attrs:{className:'container'},
           childsAttrs:{className:'panel'},
           row:[
             {html:'a',flex:2},//see here
-            {html:'b'},
-            {html:'c'}, 
+            {html:'b',flex:1},
+            {html:'c',flex:1}, 
           ]
         }}
       />
@@ -163,8 +164,8 @@ export default class app extends Component {
 [![alt text](/images/4.jpg)]
 
 
-### flex:'none'
-##### set size of child as fit content
+### set size of child as fit content
+##### just sdont set flex and size
 ``` javascript
 import React,{Component} from "react";
 import RLayout from 'r-layout';
@@ -174,10 +175,11 @@ export default class app extends Component {
     return (
       <RLayout
         layout={{
+        gap:12,
           attrs:{className:'container'},
           childsAttrs:{className:'panel'},
           row:[
-            {html:'abcdefg',flex:'none'},//see here
+            {html:'abcdefg'},//see here
             {html:'b'},
             {html:'c'}, 
           ]
