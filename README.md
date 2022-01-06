@@ -79,7 +79,7 @@ export default class app extends Component {
 [![alt text](/images/1.jpg)]
 
 ### childsProps
-##### set childsAttrs in parent as set attrs property of childs
+##### set childsProps in parent as set props of childs
 ``` javascript
 import React,{Component} from "react";
 import RLayout from 'r-layout';
