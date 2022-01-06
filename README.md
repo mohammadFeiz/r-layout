@@ -1,17 +1,24 @@
-# r-layout
-### row
-##### set horizontal layout
+# r-layout ( reactjs )
+-# create complex html/jsx layout by json
+-# decrease code capasity
+-# auto generate css by js(not required styling layout by css)
+-# based on flexbox styling
+-# simple change layout by just change a json
+-# repeat html attributes in loops
+-# resize layput panels by set one property 
+# row
+-##### generate a horizontal layout in one row without typing any css code
 ``` javascript
 import React,{Component} from "react";
-import RLayout from 'r-layout';
+import ReactVirtualDom from 'react-virtual-dom';
 import './style.css'
 export default class app extends Component {
   render(){
     return (
-      <RLayout
+      <ReactVirtualDom
         layout={{
           gap:12,
-          attrs:{className:'container'},gap:12,
+          attrs:{className:'container'},
           row:[ //see here
             {html:'a',flex:1,attrs:{className:'panel'}},
             {html:'b',flex:1,attrs:{className:'panel'}},
@@ -23,20 +30,42 @@ export default class app extends Component {
   }
 }
 ```
-
+-##### gap property will generate a div by width=12px between each child panels for gapping or resizing panels
+-##### attrs property will set all possible html attributes on div by an object. 
+-##### notice that attrs property can be a function that returns attrs object
+-##### this code will generate below html code:
+```javascript
+render(){
+    return (
+      <div class="r-layout-parent container" data-id="a0.4737824055943596" style="flex-direction: row; flex: 1 1 0%;">
+        <div class="r-layout-item panel" data-id="a0.32910683900978577" style="flex: 1 1 0%;">
+          a
+        </div>
+        <div class="r-layout-gap" draggable="false" style="width: 12px;"></div>
+        <div class="r-layout-item panel" data-id="a0.42573192806826876" style="flex: 1 1 0%;">
+          b
+        </div>
+        <div class="r-layout-gap" draggable="false" style="width: 12px;"></div>
+        <div class="r-layout-item panel" data-id="a0.6251698251428581" style="flex: 1 1 0%;">
+          c
+        </div>
+      </div>
+    )
+  }
+```
 [![alt text](/images/1.jpg)]
 
 ### column
-##### set vertical layout
-
+-##### generate a vertical layout in one column without typing any css code.
+-##### just change row in before exampe to column
 ``` javascript
 import React,{Component} from "react";
-import RLayout from 'r-layout';
+import ReactVirtualDom from 'react-virtual-dom';
 import './style.css'
 export default class app extends Component {
   render(){
     return (
-      <RLayout
+      <ReactVirtualDom
         layout={{
           gap:12,
           attrs:{className:'container'},
@@ -51,18 +80,34 @@ export default class app extends Component {
   }
 }
 ```
+-##### this code will generate below html code:
+```javascript
+<div class="r-layout-parent container" data-id="a0.16193452121795082" style="flex-direction: column; flex: 1 1 0%;">
+  <div class="r-layout-item panel" data-id="a0.7349682553750092" style="flex: 1 1 0%;">
+    a
+  </div>
+  <div class="r-layout-gap" draggable="false" style="height: 12px;"></div>
+  <div class="r-layout-item panel" data-id="a0.2587051202578894" style="flex: 1 1 0%;">
+    b
+  </div>
+  <div class="r-layout-gap" draggable="false" style="height: 12px;"></div>
+  <div class="r-layout-item panel" data-id="a0.4623202720076629" style="flex: 1 1 0%;">
+    c
+  </div>
+</div>
+```
 [![alt text](/images/2.jpg)]
-
 ### childsAttrs
-##### set childsAttrs in parent as set attrs property of childs
+-##### set childsAttrs in parent as set attrs property of childs.
+-##### this code is same of first example by fewer code capacity.
 ``` javascript
 import React,{Component} from "react";
-import RLayout from 'r-layout';
+import ReactVirtualDom from 'react-virtual-dom';
 import './style.css'
 export default class app extends Component {
   render(){
     return (
-      <RLayout
+      <ReactVirtualDom
         layout={{
           gap:12,
           attrs:{className:'container'},
@@ -82,15 +127,18 @@ export default class app extends Component {
 [![alt text](/images/1.jpg)]
 
 ### childsProps
-##### set childsProps in parent as set props of childs
+-##### set childsProps in parent as set props of childs,
+-##### this code is same of first example by fewer code capacity.
+-##### all div childswill get flex property set by childsAttrs,
+-##### notice that childsAttrs can be a function that returns child attrs object.
 ``` javascript
 import React,{Component} from "react";
-import RLayout from 'r-layout';
+import ReactVirtualDom from 'react-virtual-dom';
 import './style.css'
 export default class app extends Component {
   render(){
     return (
-      <RLayout
+      <ReactVirtualDom
         layout={{
           gap:12,
           attrs:{className:'container'},
@@ -107,7 +155,6 @@ export default class app extends Component {
   }
 }
 ```
-
 [![alt text](/images/1.jpg)]
 
 
@@ -115,12 +162,12 @@ export default class app extends Component {
 ##### set specific size on childs
 ``` javascript
 import React,{Component} from "react";
-import RLayout from './r-layout';
+import ReactVirtualDom from 'react-virtual-dom';
 import './style.css'
 export default class app extends Component {
   render(){
     return (
-      <RLayout
+      <ReactVirtualDom
         layout={{
           gap:12,
           attrs:{className:'container'},
@@ -144,12 +191,12 @@ export default class app extends Component {
 ##### default is 1
 ``` javascript
 import React,{Component} from "react";
-import RLayout from 'r-layout';
+import ReactVirtualDom from 'react-virtual-dom';
 import './style.css'
 export default class app extends Component {
   render(){
     return (
-      <RLayout
+      <ReactVirtualDom
         layout={{
           gap:12,
           attrs:{className:'container'},
@@ -173,12 +220,12 @@ export default class app extends Component {
 ##### just sdont set flex and size
 ``` javascript
 import React,{Component} from "react";
-import RLayout from 'r-layout';
+import ReactVirtualDom from 'react-virtual-dom';
 import './style.css'
 export default class app extends Component {
   render(){
     return (
-      <RLayout
+      <ReactVirtualDom
         layout={{
           gap:12,
           attrs:{className:'container'},
@@ -201,12 +248,12 @@ export default class app extends Component {
 ##### each child can get own layout 
 ``` javascript
 import React,{Component} from "react";
-import RLayout from 'r-layout';
+import ReactVirtualDom from 'react-virtual-dom';
 import './style.css'
 export default class app extends Component {
   render(){
     return (
-      <RLayout
+      <ReactVirtualDom
         layout={{
           gap:12,
           attrs:{className:'container'},
@@ -253,12 +300,12 @@ export default class app extends Component {
 ##### default is 12
 ``` javascript
 import React,{Component} from "react";
-import RLayout from 'r-layout';
+import ReactVirtualDom from 'react-virtual-dom';
 import './style.css'
 export default class app extends Component {
   render(){
     return (
-      <RLayout
+      <ReactVirtualDom
         layout={{
           gap:24,
           attrs:{className:'container'},
@@ -302,14 +349,14 @@ export default class app extends Component {
 ##### in this case size of child should store in state and onResize function change it
 ``` javascript
 import React,{Component} from "react";
-import RLayout from 'r-layout';
+import ReactVirtualDom from 'react-virtual-dom';
 import './style.css'
 export default class app extends Component {
   state = {size1:100};
   render(){
     let {size1} = this.state;
     return (
-      <RLayout
+      <ReactVirtualDom
         layout={{
           gap:12,
           attrs:{className:'container'},
@@ -356,12 +403,12 @@ export default class app extends Component {
 ##### boolean or function that return boolean
 ``` javascript
 import React,{Component} from "react";
-import RLayout from 'r-layout';
+import ReactVirtualDom from 'react-virtual-dom';
 import './style.css'
 export default class app extends Component {
   render(){
     return (
-      <RLayout
+      <ReactVirtualDom
         layout={{
           gap:12,
           attrs:{className:'container'},
@@ -400,7 +447,7 @@ export default class app extends Component {
 ### handle Complexity by get child from functions
 ``` javascript
 import React,{Component} from "react";
-import RLayout from 'r-layout';
+import ReactVirtualDom from 'react-virtual-dom';
 import './style.css'
 export default class app extends Component {
   state = {
@@ -449,7 +496,7 @@ export default class app extends Component {
   }
   render(){
     return (
-      <RLayout
+      <ReactVirtualDom
         layout={{
           attrs:{className:'container',style:{padding:12,boxSizing:'border-box'}},
           column:[ 
