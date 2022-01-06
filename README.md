@@ -305,31 +305,39 @@ import React,{Component} from "react";
 import RLayout from 'r-layout';
 import './style.css'
 export default class app extends Component {
-  state = {size1:100}; //see here
+  state = {size1:100};
   render(){
-    let {size1} = this.state; //see here
+    let {size1} = this.state;
     return (
       <RLayout
         layout={{
+          gap:12,
           attrs:{className:'container'},
           row:[
             {
+              gap:12,
               size:size1, // see here
               onResize:(value)=>this.setState({size1:value}), //see here
               childsAttrs:{className:'panel'},
               column:[
-                {html:'a1'},
-                {html:'a2'},
-                {html:'a3'},
+                {html:'a1',flex:1},
+                {html:'a2',flex:1},
+                {html:'a3',flex:1},
               ]
             },
-            {html:'b',attrs:{className:'panel'}},
+            {
+              attrs:{className:'panel'},
+              flex:1,
+              html:'b',
+            },
             {
               childsAttrs:{className:'panel'},
+              flex:1,
+              gap:12,
               column:[
-                {html:'c1'},
-                {html:'c2'},
-                {html:'c3'}, 
+                {html:'c1',flex:1},
+                {html:'c2',flex:1},
+                {html:'c3',flex:1}, 
               ]
             },
           ]
@@ -338,9 +346,6 @@ export default class app extends Component {
     )
   }
 }
-
-
-
 ```
 
 [![alt text](/images/9.gif)]
