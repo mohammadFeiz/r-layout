@@ -1,11 +1,11 @@
 # r-layout ( reactjs )
--# create complex html/jsx layout by json
--# decrease code capasity
--# auto generate css by js(not required styling layout by css)
--# based on flexbox styling
--# simple change layout by just change a json
--# repeat html attributes in loops
--# resize layput panels by set one property 
+- ### create complex html/jsx layout by json
+- ### decrease code capasity
+- ### auto generate css by js(not required styling layout by css)
+- ### based on flexbox styling
+- ### simple change layout by just change a json
+- ### repeat html attributes in loops
+- ### resize layput panels by set one property 
 # row
 -##### generate a horizontal layout in one row without typing any css code
 ``` javascript
@@ -30,10 +30,10 @@ export default class app extends Component {
   }
 }
 ```
--##### gap property will generate a div by width=12px between each child panels for gapping or resizing panels
--##### attrs property will set all possible html attributes on div by an object. 
--##### notice that attrs property can be a function that returns attrs object
--##### this code will generate below html code:
+- ##### gap property will generate a div by width=12px between each child panels for gapping or resizing panels
+- ##### attrs property will set all possible html attributes on div by an object. 
+- ##### notice that attrs property can be a function that returns attrs object
+- ##### this code will generate below html code:
 ```javascript
 render(){
     return (
@@ -56,8 +56,8 @@ render(){
 [![alt text](/images/1.jpg)]
 
 ### column
--##### generate a vertical layout in one column without typing any css code.
--##### just change row in before exampe to column
+- ##### generate a vertical layout in one column without typing any css code.
+- ##### just change row in before exampe to column
 ``` javascript
 import React,{Component} from "react";
 import ReactVirtualDom from 'react-virtual-dom';
@@ -80,7 +80,7 @@ export default class app extends Component {
   }
 }
 ```
--##### this code will generate below html code:
+- ##### this code will generate below html code:
 ```javascript
 <div class="r-layout-parent container" data-id="a0.16193452121795082" style="flex-direction: column; flex: 1 1 0%;">
   <div class="r-layout-item panel" data-id="a0.7349682553750092" style="flex: 1 1 0%;">
@@ -98,8 +98,8 @@ export default class app extends Component {
 ```
 [![alt text](/images/2.jpg)]
 ### childsAttrs
--##### set childsAttrs in parent as set attrs property of childs.
--##### this code is same of first example by fewer code capacity.
+- ##### set childsAttrs in parent as set attrs property of childs.
+- ##### this code is same of first example by fewer code capacity.
 ``` javascript
 import React,{Component} from "react";
 import ReactVirtualDom from 'react-virtual-dom';
@@ -127,10 +127,10 @@ export default class app extends Component {
 [![alt text](/images/1.jpg)]
 
 ### childsProps
--##### set childsProps in parent as set props of childs,
--##### this code is same of first example by fewer code capacity.
--##### all div childswill get flex property set by childsAttrs,
--##### notice that childsAttrs can be a function that returns child attrs object.
+- ##### set childsProps in parent as set props of childs,
+- ##### this code is same of first example by fewer code capacity.
+- ##### all div childswill get flex property set by childsAttrs,
+- ##### notice that childsAttrs can be a function that returns child attrs object.
 ``` javascript
 import React,{Component} from "react";
 import ReactVirtualDom from 'react-virtual-dom';
@@ -159,7 +159,7 @@ export default class app extends Component {
 
 
 ### size
-##### set specific size on childs
+- ##### set specific size on childs
 ``` javascript
 import React,{Component} from "react";
 import ReactVirtualDom from 'react-virtual-dom';
