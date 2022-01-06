@@ -208,23 +208,32 @@ export default class app extends Component {
     return (
       <RLayout
         layout={{
+          gap:12,
           attrs:{className:'container'},
           row:[
             {
+              gap:12,
+              flex:1,
               childsAttrs:{className:'panel'},
               column:[
-                {html:'a1'},
-                {html:'a2'},
-                {html:'a3'},
+                {html:'a1',flex:1},
+                {html:'a2',flex:1},
+                {html:'a3',flex:1},
               ]
             },
-            {html:'b',attrs:{className:'panel'}},
             {
+              flex:1,
+              attrs:{className:'panel'},
+              html:'b'
+            },
+            {
+              gap:12,
+              flex:1,
               childsAttrs:{className:'panel'},
               column:[
-                {html:'c1'},
-                {html:'c2'},
-                {html:'c3'},
+                {html:'c1',flex:1},
+                {html:'c2',flex:1},
+                {html:'c3',flex:1},
               ]
             },
           ]
