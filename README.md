@@ -65,6 +65,34 @@ export default class app extends Component {
           attrs:{className:'container'},
           childsAttrs:{className:'panel'},//see here
           row:[
+            {html:'a',flex:1},
+            {html:'b',flex:1},
+            {html:'c',flex:1}, 
+          ]
+        }}
+      />
+    )
+  }
+}
+```
+
+[![alt text](/images/1.jpg)]
+
+### childsProps
+##### set childsAttrs in parent as set attrs property of childs
+``` javascript
+import React,{Component} from "react";
+import RLayout from 'r-layout';
+import './style.css'
+export default class app extends Component {
+  render(){
+    return (
+      <RLayout
+        layout={{
+          attrs:{className:'container'},
+          childsAttrs:{className:'panel'},//see here
+          childsProps:{flex:1},//see here
+          row:[
             {html:'a'},
             {html:'b'},
             {html:'c'}, 
@@ -77,6 +105,7 @@ export default class app extends Component {
 ```
 
 [![alt text](/images/1.jpg)]
+
 
 ### size
 ##### set specific size on childs
