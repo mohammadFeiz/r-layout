@@ -259,25 +259,28 @@ export default class app extends Component {
   render(){
     return (
       <RLayout
-        gap={24} //see here
         layout={{
+          gap:24,
           attrs:{className:'container'},
           row:[
             {
+              flex:1,
+              gap:24,
               childsAttrs:{className:'panel'},
               column:[
-                {html:'a1'},
-                {html:'a2'},
-                {html:'a3'},
+                {html:'a1',flex:1},
+                {html:'a2',flex:1},
+                {html:'a3',flex:1},
               ]
             },
-            {html:'b',attrs:{className:'panel'}},
+            {html:'b',flex:1,attrs:{className:'panel'}},
             {
-              childsAttrs:{className:'panel'},
+              childsAttrs:{className:'panel'},flex:1,
+              gap:6, // see here
               column:[
-                {html:'c1'},
-                {html:'c2'},
-                {html:'c3'},
+                {html:'c1',flex:1},
+                {html:'c2',flex:1},
+                {html:'c3',flex:1},
               ]
             },
           ]
@@ -292,49 +295,7 @@ export default class app extends Component {
 
 [![alt text](/images/7.jpg)]
 
-### overwrite gap
-##### each child can get own gap
-``` javascript
-import React,{Component} from "react";
-import RLayout from 'r-layout';
-import './style.css'
-export default class app extends Component {
-  render(){
-    return (
-      <RLayout
-        gap={24}
-        layout={{
-          attrs:{className:'container'},
-          row:[
-            {
-              childsAttrs:{className:'panel'},
-              column:[
-                {html:'a1'},
-                {html:'a2'},
-                {html:'a3'},
-              ]
-            },
-            {html:'b',attrs:{className:'panel'}},
-            {
-              childsAttrs:{className:'panel'},
-              gap:6, // see here
-              column:[
-                {html:'c1'},
-                {html:'c2'},
-                {html:'c3'},
-              ]
-            },
-          ]
-        }}
-      />
-    )
-  }
-}
 
-
-```
-
-[![alt text](/images/8.jpg)]
 
 ### onResize
 ##### resize child by mouse
