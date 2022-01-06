@@ -276,7 +276,7 @@ export default class app extends Component {
             {html:'b',flex:1,attrs:{className:'panel'}},
             {
               childsAttrs:{className:'panel'},flex:1,
-              gap:6, // see here
+              gap:24, // see here
               column:[
                 {html:'c1',flex:1},
                 {html:'c2',flex:1},
