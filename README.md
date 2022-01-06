@@ -10,11 +10,11 @@ export default class app extends Component {
     return (
       <RLayout
         layout={{
-          attrs:{className:'container'},
+          attrs:{className:'container'},gap:12,
           row:[ //see here
-            {html:'a',attrs:{className:'panel'}},
-            {html:'b',attrs:{className:'panel'}},
-            {html:'c',attrs:{className:'panel'}}, 
+            {html:'a',flex:1,attrs:{className:'panel'}},
+            {html:'b',flex:1,attrs:{className:'panel'}},
+            {html:'c',flex:1,attrs:{className:'panel'}}, 
           ]
         }}
       />
