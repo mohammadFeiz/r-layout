@@ -39,9 +39,9 @@ export default class app extends Component {
         layout={{
           attrs:{className:'container'},
           column:[ // see here
-            {html:'a',attrs:{className:'panel'}},
-            {html:'b',attrs:{className:'panel'}},
-            {html:'c',attrs:{className:'panel'}}, 
+            {html:'a',flex:1,attrs:{className:'panel'}},
+            {html:'b',flex:1,attrs:{className:'panel'}},
+            {html:'c',flex:1,attrs:{className:'panel'}}, 
           ]
         }}
       />
