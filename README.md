@@ -7,7 +7,7 @@
 - ### repeat html attributes in loops
 - ### resize layput panels by set one property 
 # row
--##### generate a horizontal layout in one row without typing any css code
+- ##### generate a horizontal layout in one row without typing any css code
 ``` javascript
 import React,{Component} from "react";
 import ReactVirtualDom from 'react-virtual-dom';
