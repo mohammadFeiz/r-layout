@@ -1,4 +1,4 @@
-# r-layout ( reactjs )
+# react-virtual-dom ( reactjs )
 - ### create complex html/jsx layout by json
 - ### decrease code capasity
 - ### auto generate css by js(not required styling layout by css)
@@ -9,7 +9,25 @@
 - ### support rtl layout just by set main parent direction css to rtl
 - ### make panels resizable
 - ### align panels content hotizontaly and/or verticaly
-# row
+# Install
+``` npm i react-virtual-dom ```
+# props(just 1 prop)
+prop | type | description
+layout | json | this json will convert to html
+
+# layout json properties:
+
+property | type | default | description
+row | array | optional | child divs (Which will placed horizontally)
+column | array | optional | child divs (Which will placed vertically)
+html | html/jsx | optional | html content of node.
+gap | number | optional | will generate gap space between childs.
+align | string 'v' or 'h' or 'vh' | optional | align content in center horizontally and/or vertically.
+attrs | object | optional | node attributes.
+childsAttrs | object | optional | an object that defines childs attributes.
+childsAttrs | function | optional | a function that get each direct child object and  direct each child index as parameter and returns child attributes.
+
+## row
 - ##### generate a horizontal layout in one row without typing any css code
 ``` javascript
 import React,{Component} from "react";
