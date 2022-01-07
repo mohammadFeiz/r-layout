@@ -30,7 +30,7 @@ export default class app extends Component {
   }
 }
 ```
-- ##### gap property will generate a div by width=12px between each child panels for gapping or resizing panels
+- ##### gap:12 property will generate a div by width=12px between each child panels for gapping or resizing panels
 - ##### attrs property will set all possible html attributes on div by an object. 
 - ##### notice that attrs property can be a function that returns attrs object
 - ##### this code will generate below html code:
@@ -294,55 +294,6 @@ export default class app extends Component {
 ```
 
 [![alt text](/images/6.jpg)]
-
-### gap
-##### space between childs
-##### default is 12
-``` javascript
-import React,{Component} from "react";
-import ReactVirtualDom from 'react-virtual-dom';
-import './style.css'
-export default class app extends Component {
-  render(){
-    return (
-      <ReactVirtualDom
-        layout={{
-          gap:24,
-          attrs:{className:'container'},
-          row:[
-            {
-              flex:1,
-              gap:24,
-              childsAttrs:{className:'panel'},
-              column:[
-                {html:'a1',flex:1},
-                {html:'a2',flex:1},
-                {html:'a3',flex:1},
-              ]
-            },
-            {html:'b',flex:1,attrs:{className:'panel'}},
-            {
-              childsAttrs:{className:'panel'},flex:1,
-              gap:24, // see here
-              column:[
-                {html:'c1',flex:1},
-                {html:'c2',flex:1},
-                {html:'c3',flex:1},
-              ]
-            },
-          ]
-        }}
-      />
-    )
-  }
-}
-
-
-```
-
-[![alt text](/images/7.jpg)]
-
-
 
 ### onResize
 ##### resize child by mouse
