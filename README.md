@@ -217,7 +217,7 @@ export default class app extends Component {
 
 
 ### set size of child as fit content
-##### just sdont set flex and size
+##### just dont set flex and size
 ``` javascript
 import React,{Component} from "react";
 import ReactVirtualDom from 'react-virtual-dom';
