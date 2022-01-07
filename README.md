@@ -19,6 +19,7 @@ layout | json | this json will convert to html
 # layout json properties:
 
 property | type | default | description
+-------- | ---- | ------- | -----------
 row | array | optional | child divs (Which will placed horizontally)
 column | array | optional | child divs (Which will placed vertically)
 html | html/jsx | optional | html content of node.
