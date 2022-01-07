@@ -6,6 +6,9 @@
 - ### simple change layout by just change a json
 - ### repeat html attributes in loops
 - ### resize layput panels by set one property 
+- ### support rtl layout just by set main parent direction css to rtl
+- ### make panels resizable
+- ### align panels content hotizontaly and/or verticaly
 # row
 - ##### generate a horizontal layout in one row without typing any css code
 ``` javascript
