@@ -13,6 +13,7 @@
 ``` npm i react-virtual-dom ```
 # props(just 1 prop)
 prop | type | description
+---- | ---- | -----------
 layout | json | this json will convert to html
 
 # layout json properties:
