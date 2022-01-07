@@ -66,12 +66,14 @@ export default class RLayout extends Component {
     let gapStyle = {}
     if(parent.row){
       style.width = size;
+      style.height = '100%';
       gapStyle.width = parent.gap;
       if(size && onResize){gapStyle.cursor = 'col-resize';}
       axis = 'x';
     }
     else if(parent.column){
       style.height = size;
+      style.width = '100%';
       gapStyle.height = parent.gap;
       if(size && onResize){gapStyle.cursor = 'row-resize';}
       axis = 'y';

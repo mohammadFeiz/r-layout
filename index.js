@@ -188,6 +188,7 @@ var RLayout = /*#__PURE__*/function (_Component) {
 
       if (parent.row) {
         style.width = size;
+        style.height = '100%';
         gapStyle.width = parent.gap;
 
         if (size && onResize) {
@@ -197,6 +198,7 @@ var RLayout = /*#__PURE__*/function (_Component) {
         axis = 'x';
       } else if (parent.column) {
         style.height = size;
+        style.width = '100%';
         gapStyle.height = parent.gap;
 
         if (size && onResize) {
