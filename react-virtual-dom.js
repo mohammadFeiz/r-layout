@@ -1,7 +1,7 @@
 import React,{Component,Fragment} from "react";
 import "./index.css";
 import $ from 'jquery';
-export default class RLayout extends Component {
+export default class ReactVirtualDom extends Component {
   touch = 'ontouchstart' in document.documentElement;
   eventHandler(event, action,type = 'bind'){
     event = this.touch ? { mousemove: "touchmove", mouseup: "touchend" }[event] : event;
@@ -9,25 +9,25 @@ export default class RLayout extends Component {
     if(type === 'bind'){$(window).bind(event, action)}
   }
   getClassName(obj,childs,Attrs,attrs,Props){
-    let className = childs.length?'r-layout-parent':'r-layout-item';
-    let gapClassName = 'r-layout-gap';
+    let className = childs.length?'rvd-parent':'rvd-item';
+    let gapClassName = 'rvd-gap';
     if(Attrs.className){ className += ' ' + Attrs.className}
     if(attrs.className){ className += ' ' + attrs.className}
     if(obj.hide_xs || Props.hide_xs){
-      className += ' r-layout-hide-xs';
-      gapClassName += ' r-layout-hide-xs';
+      className += ' rvd-hide-xs';
+      gapClassName += ' rvd-hide-xs';
     }
     if(obj.hide_sm || Props.hide_sm){
-      className += ' r-layout-hide-sm';
-      gapClassName += ' r-layout-hide-sm';
+      className += ' rvd-hide-sm';
+      gapClassName += ' rvd-hide-sm';
     }
     if(obj.hide_md || Props.hide_md){
-      className += ' r-layout-hide-md';
-      gapClassName += ' r-layout-hide-md';
+      className += ' rvd-hide-md';
+      gapClassName += ' rvd-hide-md';
     }
     if(obj.hide_lg || Props.hide_lg){
-      className += ' r-layout-hide-lg';
-      gapClassName += ' r-layout-hide-lg';
+      className += ' rvd-hide-lg';
+      gapClassName += ' rvd-hide-lg';
     }
     return {className,gapClassName};
   }
@@ -52,7 +52,7 @@ export default class RLayout extends Component {
   }
   getProps(obj,index,parent){
     let {childsAttrs = ()=>{return {}},childsProps = ()=>{return {}}} = parent;
-    let {attrs = {},onResize} = obj;
+    let {attrs = {},onResize,swapId} = obj;
     let Attrs = (typeof childsAttrs === 'function'?childsAttrs(obj,index):childsAttrs) || {};
     let Props = (typeof childsProps === 'function'?childsProps(obj,index):childsProps) || {};
     let size = obj.size || Props.size;
@@ -95,6 +95,25 @@ export default class RLayout extends Component {
         this.eventHandler('mouseup',$.proxy(this.mouseUp,this));
       }
     }
+    if(swapId){
+      attrs.draggable = true;
+      attrs.onDragStart = (e)=>{
+        let {swapHandleClassName} = this.props;
+        if(swapHandleClassName){
+          if(!$(e.target).hasClass(swapHandleClassName) && $(e.target).parents('.' + swapHandleClassName).length === 0){return;}
+        }
+        this.swapId = swapId;
+      }
+      attrs.onDragOver = (e)=>{
+        e.preventDefault();
+      }
+      attrs.onDrop = ()=>{
+        let {onSwap = ()=>{}} = this.props;
+        if(this.swapId === swapId){return;}
+        onSwap(this.swapId,swapId);
+        this.swapId = false
+      }
+    } 
     return {
       size,flex,childs,style,html,dataId,
       attrs:{...Attrs,...attrs,className,'data-id':dataId},
@@ -147,4 +166,4 @@ export default class RLayout extends Component {
     return this.getHtml(layout,0);
   }
 }
-RLayout.defaultProps = {gap:0,layout:{}};
+ReactVirtualDom.defaultProps = {gap:0,layout:{}};
