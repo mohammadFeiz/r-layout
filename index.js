@@ -41,8 +41,8 @@ class ReactVirtualDom extends _react.Component {
   }
 
   getClassName(obj, childs, Attrs, attrs, Props) {
-    let className = childs.length ? 'rvd-parent' : 'rvd-item';
-    let gapClassName = 'rvd-gap';
+    let className = childs.length ? 'r-layout-parent' : 'r-layout-item';
+    let gapClassName = 'r-layout-gap';
 
     if (Attrs.className) {
       className += ' ' + Attrs.className;
@@ -53,23 +53,23 @@ class ReactVirtualDom extends _react.Component {
     }
 
     if (obj.hide_xs || Props.hide_xs) {
-      className += ' rvd-hide-xs';
-      gapClassName += ' rvd-hide-xs';
+      className += ' r-layout-hide-xs';
+      gapClassName += ' r-layout-hide-xs';
     }
 
     if (obj.hide_sm || Props.hide_sm) {
-      className += ' rvd-hide-sm';
-      gapClassName += ' rvd-hide-sm';
+      className += ' r-layout-hide-sm';
+      gapClassName += ' r-layout-hide-sm';
     }
 
     if (obj.hide_md || Props.hide_md) {
-      className += ' rvd-hide-md';
-      gapClassName += ' rvd-hide-md';
+      className += ' r-layout-hide-md';
+      gapClassName += ' r-layout-hide-md';
     }
 
     if (obj.hide_lg || Props.hide_lg) {
-      className += ' rvd-hide-lg';
-      gapClassName += ' rvd-hide-lg';
+      className += ' r-layout-hide-lg';
+      gapClassName += ' r-layout-hide-lg';
     }
 
     return {
@@ -154,7 +154,6 @@ class ReactVirtualDom extends _react.Component {
       axis = 'x';
     } else if (parent.column) {
       style.height = size;
-      style.width = '100%';
       gapStyle.height = parent.gap;
 
       if (size && onResize) {
