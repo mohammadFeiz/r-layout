@@ -8,11 +8,13 @@ export default class ReactVirtualDom extends Component {
     $(window).unbind(event, action);
     if(type === 'bind'){$(window).bind(event, action)}
   }
-  getClassName(obj,childs,Attrs,attrs,Props){
+  getClassName(obj,childs,Attrs,attrs,Props,isRoot){
     let className = childs.length?'r-layout-parent':'r-layout-item';
+    if(isRoot){className += ' r-layout-root'}
     let gapClassName = 'r-layout-gap';
     if(Attrs.className){ className += ' ' + Attrs.className}
     if(attrs.className){ className += ' ' + attrs.className}
+    if(obj.className){ className += ' ' + obj.className}
     if(obj.hide_xs || Props.hide_xs){
       className += ' r-layout-hide-xs';
       gapClassName += ' r-layout-hide-xs';
@@ -48,9 +50,10 @@ export default class ReactVirtualDom extends Component {
     if(scroll === 'v'){style.overflowY = 'auto'}
     else if(scroll === 'h'){style.overflowX = 'auto'; style.whiteSpace = 'nowrap';}
     else if(scroll === 'vh' || scroll === 'hv'){style.overflowX = 'auto'; style.overflowY = 'auto';}
+    if(obj.style){style = {...style,...obj.style}}
     return style
   }
-  getProps(obj,index,parent){
+  getProps(obj,index,parent,isRoot){
     let {childsAttrs = ()=>{return {}},childsProps = ()=>{return {}}} = parent;
     let {attrs = {},onResize,swapId} = obj;
     let Attrs = (typeof childsAttrs === 'function'?childsAttrs(obj,index):childsAttrs) || {};
@@ -85,7 +88,7 @@ export default class ReactVirtualDom extends Component {
       childs = typeof obj.column === 'function'?obj.column():obj.column
       style.flexDirection = 'column'
     }
-    let {className,gapClassName} = this.getClassName(obj,childs,Attrs,attrs,Props);
+    let {className,gapClassName} = this.getClassName(obj,childs,Attrs,attrs,Props,isRoot);
     let gapAttrs = {className:gapClassName,style:gapStyle,draggable:false,onDragStart:(e)=>e.preventDefault()};
     if(size && onResize){
       gapAttrs[this.touch?'onTouchStart':'onMouseDown'] = (e)=>{
@@ -120,18 +123,18 @@ export default class ReactVirtualDom extends Component {
     }
   }
   getClient(e){return this.touch?{x:e.changedTouches[0].clientX,y:e.changedTouches[0].clientY}:{x:e.clientX,y:e.clientY}}
-  getHtml(obj,index,parentObj){
+  getHtml(obj,index,parentObj,isRoot){
     if(!obj || obj === null){return ''}
     let {show = true} = obj;
     let Show = typeof show === 'function'?show():show;
     let parent = parentObj || {};
     if(!Show){return null}
-    let {size,flex,childs,style,html,attrs,gapAttrs} = this.getProps(obj,index,parent)
+    let {size,flex,childs,style,html,attrs,gapAttrs} = this.getProps(obj,index,parent,isRoot)
     if(parentObj){flex = flex || 'none'}
     var result;
     if(!childs.length){result = <div {...attrs} style={{...style,flex}}>{html}</div>}
     else{
-      let Style = {...style,flex:!size?(flex || 1):undefined};
+      let Style = {...style,flex:!size?(flex || (isRoot?undefined:1)):undefined};
       result = (
         <div {...attrs} style={Style}>
           {childs.map((o,i)=><Fragment key={i}>{this.getHtml(o,i,obj)}</Fragment>)}
@@ -162,7 +165,7 @@ export default class ReactVirtualDom extends Component {
   }
   render(){
     var {gap,layout} = this.props;
-    return this.getHtml(layout,0);
+    return this.getHtml(layout,0,undefined,true);
   }
 }
 ReactVirtualDom.defaultProps = {gap:0,layout:{}};

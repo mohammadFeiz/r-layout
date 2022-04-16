@@ -40,8 +40,13 @@ class ReactVirtualDom extends _react.Component {
     }
   }
 
-  getClassName(obj, childs, Attrs, attrs, Props) {
+  getClassName(obj, childs, Attrs, attrs, Props, isRoot) {
     let className = childs.length ? 'r-layout-parent' : 'r-layout-item';
+
+    if (isRoot) {
+      className += ' r-layout-root';
+    }
+
     let gapClassName = 'r-layout-gap';
 
     if (Attrs.className) {
@@ -50,6 +55,10 @@ class ReactVirtualDom extends _react.Component {
 
     if (attrs.className) {
       className += ' ' + attrs.className;
+    }
+
+    if (obj.className) {
+      className += ' ' + obj.className;
     }
 
     if (obj.hide_xs || Props.hide_xs) {
@@ -109,10 +118,16 @@ class ReactVirtualDom extends _react.Component {
       style.overflowY = 'auto';
     }
 
+    if (obj.style) {
+      style = { ...style,
+        ...obj.style
+      };
+    }
+
     return style;
   }
 
-  getProps(obj, index, parent) {
+  getProps(obj, index, parent, isRoot) {
     let {
       childsAttrs = () => {
         return {};
@@ -174,7 +189,7 @@ class ReactVirtualDom extends _react.Component {
     let {
       className,
       gapClassName
-    } = this.getClassName(obj, childs, Attrs, attrs, Props);
+    } = this.getClassName(obj, childs, Attrs, attrs, Props, isRoot);
     let gapAttrs = {
       className: gapClassName,
       style: gapStyle,
@@ -257,7 +272,7 @@ class ReactVirtualDom extends _react.Component {
     };
   }
 
-  getHtml(obj, index, parentObj) {
+  getHtml(obj, index, parentObj, isRoot) {
     if (!obj || obj === null) {
       return '';
     }
@@ -280,7 +295,7 @@ class ReactVirtualDom extends _react.Component {
       html,
       attrs,
       gapAttrs
-    } = this.getProps(obj, index, parent);
+    } = this.getProps(obj, index, parent, isRoot);
 
     if (parentObj) {
       flex = flex || 'none';
@@ -296,7 +311,7 @@ class ReactVirtualDom extends _react.Component {
       }), html);
     } else {
       let Style = { ...style,
-        flex: !size ? flex || 1 : undefined
+        flex: !size ? flex || (isRoot ? undefined : 1) : undefined
       };
       result = /*#__PURE__*/_react.default.createElement("div", _extends({}, attrs, {
         style: Style
@@ -347,7 +362,7 @@ class ReactVirtualDom extends _react.Component {
       gap,
       layout
     } = this.props;
-    return this.getHtml(layout, 0);
+    return this.getHtml(layout, 0, undefined, true);
   }
 
 }
