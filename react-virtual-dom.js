@@ -134,7 +134,7 @@ export default class ReactVirtualDom extends Component {
     var result;
     if(!childs.length){result = <div {...attrs} style={{...style,flex}}>{html}</div>}
     else{
-      let Style = {...style,flex:!size?(flex || (isRoot?undefined:1)):undefined};
+      let Style = {...style,flex:!size?(flex || 1):undefined};
       result = (
         <div {...attrs} style={Style}>
           {childs.map((o,i)=><Fragment key={i}>{this.getHtml(o,i,obj)}</Fragment>)}

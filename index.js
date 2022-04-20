@@ -311,7 +311,7 @@ class ReactVirtualDom extends _react.Component {
       }), html);
     } else {
       let Style = { ...style,
-        flex: !size ? flex || (isRoot ? undefined : 1) : undefined
+        flex: !size ? flex || 1 : undefined
       };
       result = /*#__PURE__*/_react.default.createElement("div", _extends({}, attrs, {
         style: Style
