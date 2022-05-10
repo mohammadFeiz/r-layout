@@ -8,13 +8,25 @@ export default class ReactVirtualDom extends Component {
     $(window).unbind(event, action);
     if(type === 'bind'){$(window).bind(event, action)}
   }
-  getClassName(obj,childs,Attrs,attrs,Props,isRoot){
+  getClassName(obj,childs,align,scroll,Attrs,attrs,Props,isRoot,parent){
     let className = childs.length?'r-layout-parent':'r-layout-item';
+    if(parent){
+      if(parent.row){className += ' r-layout-row-child';}
+      else if(parent.column){className += ' r-layout-column-child';}
+    }
     if(isRoot){className += ' r-layout-root'}
     let gapClassName = 'r-layout-gap';
     if(Attrs.className){ className += ' ' + Attrs.className}
     if(attrs.className){ className += ' ' + attrs.className}
     if(obj.className){ className += ' ' + obj.className}
+    if(align === 'v'){className += obj.column?' rvd-justify':' rvd-align';}
+    else if(align === 'h'){className += obj.column?' rvd-align':' rvd-justify';}
+    else if(align === 'vh'){className += ' rvd-justify rvd-align';}
+    if(scroll === 'v'){className += ' rvd-y-auto'}
+    else if(scroll === 'h'){className += ' rvd-x-auto'}
+    else if(scroll === 'vh'){className += ' rvd-x-auto rvd-y-auto';}
+    if(obj.row){className += ' rvd-row'}
+    else if(obj.column){className += ' rvd-column'}
     if(obj.hide_xs || Props.hide_xs){
       className += ' r-layout-hide-xs';
       gapClassName += ' r-layout-hide-xs';
@@ -33,26 +45,6 @@ export default class ReactVirtualDom extends Component {
     }
     return {className,gapClassName};
   }
-  getStyle(obj,Props,style){
-    let align = obj.align || Props.align;
-    let scroll = obj.scroll || Props.scroll;
-    if(align === 'v'){
-      if(obj.column){style.justifyContent = 'center'}
-      else {style.alignItems = 'center'}
-      
-    }
-    else if(align === 'h'){
-      if(obj.column){style.alignItems = 'center'}
-      else {style.justifyContent = 'center'}
-      
-    }
-    else if(align === 'vh' || align === 'hv'){style.alignItems = 'center'; style.justifyContent = 'center';}
-    if(scroll === 'v'){style.overflowY = 'auto'}
-    else if(scroll === 'h'){style.overflowX = 'auto'; style.whiteSpace = 'nowrap';}
-    else if(scroll === 'vh' || scroll === 'hv'){style.overflowX = 'auto'; style.overflowY = 'auto';}
-    if(obj.style){style = {...style,...obj.style}}
-    return style
-  }
   getProps(obj,index,parent,isRoot){
     let {childsAttrs = ()=>{return {}},childsProps = ()=>{return {}}} = parent;
     let {attrs = {},onResize,swapId} = obj;
@@ -60,16 +52,17 @@ export default class ReactVirtualDom extends Component {
     let Props = (typeof childsProps === 'function'?childsProps(obj,index):childsProps) || {};
     let size = obj.size || Props.size;
     let flex = obj.flex || Props.flex;
+    let align = obj.align || Props.align;
+    let scroll = obj.scroll || Props.scroll;
     let cursor = Attrs.onClick || attrs.onClick?'pointer':undefined;
     let childs = [];
     let html = typeof obj.html === 'function'?obj.html():obj.html;
     let dataId = 'a' + Math.random();
-    let style = this.getStyle(obj,Props,{cursor,...Attrs.style,...attrs.style})
+    let style = {cursor,...Attrs.style,...attrs.style,...obj.style}
     let axis;
     let gapStyle = {}
     if(parent.row){
       style.width = size;
-      style.height = '100%';
       gapStyle.width = parent.gap;
       if(size && onResize){gapStyle.cursor = 'col-resize';}
       axis = 'x';
@@ -82,13 +75,11 @@ export default class ReactVirtualDom extends Component {
     }
     if(obj.row){
       childs = typeof obj.row === 'function'?obj.row():obj.row;
-      style.flexDirection = 'row'
     }
     else if(obj.column){
       childs = typeof obj.column === 'function'?obj.column():obj.column
-      style.flexDirection = 'column'
     }
-    let {className,gapClassName} = this.getClassName(obj,childs,Attrs,attrs,Props,isRoot);
+    let {className,gapClassName} = this.getClassName(obj,childs,align,scroll,Attrs,attrs,Props,isRoot,parent);
     let gapAttrs = {className:gapClassName,style:gapStyle,draggable:false,onDragStart:(e)=>e.preventDefault()};
     if(size && onResize){
       gapAttrs[this.touch?'onTouchStart':'onMouseDown'] = (e)=>{
