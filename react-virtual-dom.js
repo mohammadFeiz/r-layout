@@ -16,6 +16,9 @@ export default class ReactVirtualDom extends Component {
     }
     if(isRoot){className += ' r-layout-root'}
     let gapClassName = 'r-layout-gap';
+    if(obj.gapAttrs && obj.gapAttrs.className){
+      gapClassName += ' ' + obj.gapAttrs.className
+    }
     if(Attrs.className){ className += ' ' + Attrs.className}
     if(attrs.className){ className += ' ' + attrs.className}
     if(obj.className){ className += ' ' + obj.className}
@@ -62,13 +65,13 @@ export default class ReactVirtualDom extends Component {
     let axis;
     let gapStyle = {}
     if(parent.row){
-      style.width = size;
+      if(size !== undefined){style.width = size}
       gapStyle.width = parent.gap;
       if(size && onResize){gapStyle.cursor = 'col-resize';}
       axis = 'x';
     }
     else if(parent.column){
-      style.height = size;
+      if(size !== undefined){style.height = size}
       gapStyle.height = parent.gap;
       if(size && onResize){gapStyle.cursor = 'row-resize';}
       axis = 'y';
@@ -79,8 +82,11 @@ export default class ReactVirtualDom extends Component {
     else if(obj.column){
       childs = typeof obj.column === 'function'?obj.column():obj.column
     }
+    if(obj.gapAttrs && obj.gapAttrs.style){
+      gapStyle = {...gapStyle,...obj.gapAttrs.style}
+    }
     let {className,gapClassName} = this.getClassName(obj,childs,align,scroll,Attrs,attrs,Props,isRoot,parent);
-    let gapAttrs = {className:gapClassName,style:gapStyle,draggable:false,onDragStart:(e)=>e.preventDefault()};
+    let gapAttrs = {className:gapClassName,style:gapStyle,draggable:false,onDragStart:(e)=>{e.preventDefault(); return false}};
     if(size && onResize){
       gapAttrs[this.touch?'onTouchStart':'onMouseDown'] = (e)=>{
         this.so = {pos:this.getClient(e),onResize,axis,size,dataId};
@@ -125,7 +131,7 @@ export default class ReactVirtualDom extends Component {
     var result;
     if(!childs.length){result = <div {...attrs} style={{...style,flex}}>{html}</div>}
     else{
-      let Style = {...style,flex:!size?(flex || 1):undefined};
+      let Style = {flex:!size?(flex || 1):undefined,...style};
       result = (
         <div {...attrs} style={Style}>
           {childs.map((o,i)=><Fragment key={i}>{this.getHtml(o,i,obj)}</Fragment>)}
@@ -144,6 +150,7 @@ export default class ReactVirtualDom extends Component {
     var {pos,axis,size,dataId} = this.so;
     var client = this.getClient(e);
     var offset = (client[axis] - pos[axis]) * (rtl?-1:1);
+    if(offset % 24 !== 0){return}
     this.so.newSize = offset + size;
     var panel = $('[data-id="'+dataId+'"]');
     panel.css({[{'x':'width','y':'height'}[axis]]:this.so.newSize})

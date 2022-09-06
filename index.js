@@ -17,7 +17,7 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -56,6 +56,10 @@ class ReactVirtualDom extends _react.Component {
     }
 
     let gapClassName = 'r-layout-gap';
+
+    if (obj.gapAttrs && obj.gapAttrs.className) {
+      gapClassName += ' ' + obj.gapAttrs.className;
+    }
 
     if (Attrs.className) {
       className += ' ' + Attrs.className;
@@ -151,7 +155,10 @@ class ReactVirtualDom extends _react.Component {
     let gapStyle = {};
 
     if (parent.row) {
-      style.width = size;
+      if (size !== undefined) {
+        style.width = size;
+      }
+
       gapStyle.width = parent.gap;
 
       if (size && onResize) {
@@ -160,7 +167,10 @@ class ReactVirtualDom extends _react.Component {
 
       axis = 'x';
     } else if (parent.column) {
-      style.height = size;
+      if (size !== undefined) {
+        style.height = size;
+      }
+
       gapStyle.height = parent.gap;
 
       if (size && onResize) {
@@ -176,6 +186,12 @@ class ReactVirtualDom extends _react.Component {
       childs = typeof obj.column === 'function' ? obj.column() : obj.column;
     }
 
+    if (obj.gapAttrs && obj.gapAttrs.style) {
+      gapStyle = { ...gapStyle,
+        ...obj.gapAttrs.style
+      };
+    }
+
     let {
       className,
       gapClassName
@@ -184,7 +200,10 @@ class ReactVirtualDom extends _react.Component {
       className: gapClassName,
       style: gapStyle,
       draggable: false,
-      onDragStart: e => e.preventDefault()
+      onDragStart: e => {
+        e.preventDefault();
+        return false;
+      }
     };
 
     if (size && onResize) {
@@ -300,8 +319,9 @@ class ReactVirtualDom extends _react.Component {
         }
       }), html);
     } else {
-      let Style = { ...style,
-        flex: !size ? flex || 1 : undefined
+      let Style = {
+        flex: !size ? flex || 1 : undefined,
+        ...style
       };
       result = /*#__PURE__*/_react.default.createElement("div", _extends({}, attrs, {
         style: Style
@@ -327,6 +347,11 @@ class ReactVirtualDom extends _react.Component {
     } = this.so;
     var client = this.getClient(e);
     var offset = (client[axis] - pos[axis]) * (rtl ? -1 : 1);
+
+    if (offset % 24 !== 0) {
+      return;
+    }
+
     this.so.newSize = offset + size;
     var panel = (0, _jquery.default)('[data-id="' + dataId + '"]');
     panel.css({
