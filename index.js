@@ -1,389 +1,451 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireWildcard(require("react"));
-
-require("./index.css");
-
-var _jquery = _interopRequireDefault(require("jquery"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-class ReactVirtualDom extends _react.Component {
-  constructor(...args) {
-    super(...args);
-
-    _defineProperty(this, "touch", 'ontouchstart' in document.documentElement);
-  }
-
-  eventHandler(event, action, type = 'bind') {
-    event = this.touch ? {
-      mousemove: "touchmove",
-      mouseup: "touchend"
-    }[event] : event;
-    (0, _jquery.default)(window).unbind(event, action);
-
-    if (type === 'bind') {
-      (0, _jquery.default)(window).bind(event, action);
-    }
-  }
-
-  getClassName(obj, childs, align, scroll, Attrs, attrs, Props, isRoot, parent) {
-    let className = childs.length ? 'r-layout-parent' : 'r-layout-item';
-
-    if (parent) {
-      if (parent.row) {
-        className += ' r-layout-row-child';
-      } else if (parent.column) {
-        className += ' r-layout-column-child';
-      }
-    }
-
+import React, { Component, Fragment } from "react";
+import $ from 'jquery';
+import "./index.css";
+let RVDCLS = {
+  rvd: 'rvd',
+  pointer: 'rvd-pointer',
+  gap: 'rvd-gap',
+  justify: 'rvd-justify',
+  align: 'rvd-align',
+  row: 'rvd-row',
+  column: 'rvd-column',
+  hidexs: 'rvd-hide-xs',
+  hidesm: 'rvd-hide-sm',
+  hidemd: 'rvd-hide-md',
+  hidelg: 'rvd-hide-lg'
+};
+export default class ReactVirtualDom extends Component {
+  getClassName(pointer, isRoot, props, attrs = {}) {
+    let className = RVDCLS.rvd;
     if (isRoot) {
-      className += ' r-layout-root';
+      className += ' rvd-root';
     }
-
-    let gapClassName = 'r-layout-gap';
-
-    if (obj.gapAttrs && obj.gapAttrs.className) {
-      gapClassName += ' ' + obj.gapAttrs.className;
-    }
-
-    if (Attrs.className) {
-      className += ' ' + Attrs.className;
-    }
-
-    if (attrs.className) {
+    if (props.className) {
+      className += ' ' + props.className;
+    } else if (attrs.className) {
       className += ' ' + attrs.className;
     }
-
-    if (obj.className) {
-      className += ' ' + obj.className;
+    if (pointer) {
+      className += ' ' + RVDCLS.pointer;
     }
-
-    if (align === 'v') {
-      className += obj.column ? ' rvd-justify' : ' rvd-align';
-    } else if (align === 'h') {
-      className += obj.column ? ' rvd-align' : ' rvd-justify';
-    } else if (align === 'vh') {
-      className += ' rvd-justify rvd-align';
+    if (props.align === 'v') {
+      className += ' ' + (props.column ? RVDCLS.justify : RVDCLS.align);
+    } else if (props.align === 'h') {
+      className += ' ' + (props.column ? RVDCLS.align : RVDCLS.justify);
+    } else if (props.align === 'vh') {
+      className += ` ${RVDCLS.justify} ${RVDCLS.align}`;
     }
-
-    if (scroll === 'v') {
-      className += ' rvd-y-auto';
-    } else if (scroll === 'h') {
-      className += ' rvd-x-auto';
-    } else if (scroll === 'vh') {
-      className += ' rvd-x-auto rvd-y-auto';
+    if (props.row) {
+      className += ' ' + RVDCLS.row;
+    } else if (props.column || props.grid) {
+      className += ' ' + RVDCLS.column;
     }
-
-    if (obj.row) {
-      className += ' rvd-row';
-    } else if (obj.column) {
-      className += ' rvd-column';
-    }
-
-    if (obj.hide_xs || Props.hide_xs) {
-      className += ' r-layout-hide-xs';
-      gapClassName += ' r-layout-hide-xs';
-    }
-
-    if (obj.hide_sm || Props.hide_sm) {
-      className += ' r-layout-hide-sm';
-      gapClassName += ' r-layout-hide-sm';
-    }
-
-    if (obj.hide_md || Props.hide_md) {
-      className += ' r-layout-hide-md';
-      gapClassName += ' r-layout-hide-md';
-    }
-
-    if (obj.hide_lg || Props.hide_lg) {
-      className += ' r-layout-hide-lg';
-      gapClassName += ' r-layout-hide-lg';
-    }
-
-    return {
-      className,
-      gapClassName
-    };
+    let hideClassName = getHideClassName(props);
+    return className + (hideClassName ? ' ' + hideClassName : '');
   }
-
-  getProps(obj, index, parent, isRoot) {
+  getProps(obj, index, parent = {}, isRoot) {
     let {
-      childsAttrs = () => {
-        return {};
-      },
+      htmls = {}
+    } = this.props;
+    let {
       childsProps = () => {
         return {};
       }
     } = parent;
-    let {
-      attrs = {},
-      onResize,
-      swapId
-    } = obj;
-    let Attrs = (typeof childsAttrs === 'function' ? childsAttrs(obj, index) : childsAttrs) || {};
     let Props = (typeof childsProps === 'function' ? childsProps(obj, index) : childsProps) || {};
-    let size = obj.size || Props.size;
-    let flex = obj.flex || Props.flex;
-    let align = obj.align || Props.align;
-    let scroll = obj.scroll || Props.scroll;
-    let cursor = Attrs.onClick || attrs.onClick ? 'pointer' : undefined;
-    let childs = [];
-    let html = typeof obj.html === 'function' ? obj.html() : obj.html;
-    let dataId = 'a' + Math.random();
-    let style = {
-      cursor,
-      ...Attrs.style,
-      ...attrs.style,
-      ...obj.style
+    let props = {
+      ...Props,
+      ...obj
     };
-    let axis;
-    let gapStyle = {};
-
+    let {
+      dragId,
+      size,
+      flex,
+      onClick,
+      html,
+      style,
+      longTouch
+    } = props;
+    let attrs = obj.attrs || Props.attrs || {};
+    let pointer = !!onClick || !!attrs.onClick;
+    let childs = [];
+    html = typeof html === 'function' ? html() : html;
+    if (typeof html === 'string' && htmls[html]) {
+      html = htmls[html](obj);
+    }
+    // if(typeof html === 'object'){
+    //   console.error('react-virtual-dom html error, html cannot be an abject');
+    //   console.error('node is : ' ,obj)
+    //   html = '';
+    // }
+    let dataId = 'a' + Math.random();
+    style = {
+      ...attrs.style,
+      ...style
+    };
     if (parent.row) {
       if (size !== undefined) {
         style.width = size;
+        flex = undefined;
       }
-
-      gapStyle.width = parent.gap;
-
-      if (size && onResize) {
-        gapStyle.cursor = 'col-resize';
-      }
-
-      axis = 'x';
-    } else if (parent.column) {
+    } else if (parent.column || parent.grid) {
       if (size !== undefined) {
         style.height = size;
+        flex = undefined;
       }
-
-      gapStyle.height = parent.gap;
-
-      if (size && onResize) {
-        gapStyle.cursor = 'row-resize';
-      }
-
-      axis = 'y';
     }
-
     if (obj.row) {
       childs = typeof obj.row === 'function' ? obj.row() : obj.row;
     } else if (obj.column) {
       childs = typeof obj.column === 'function' ? obj.column() : obj.column;
-    }
-
-    if (obj.gapAttrs && obj.gapAttrs.style) {
-      gapStyle = { ...gapStyle,
-        ...obj.gapAttrs.style
-      };
-    }
-
-    let {
-      className,
-      gapClassName
-    } = this.getClassName(obj, childs, align, scroll, Attrs, attrs, Props, isRoot, parent);
-    let gapAttrs = {
-      className: gapClassName,
-      style: gapStyle,
-      draggable: false,
-      onDragStart: e => {
-        e.preventDefault();
-        return false;
+    } else if (obj.grid) {
+      let {
+        gridCols = 2
+      } = obj;
+      let grid = typeof obj.grid === 'function' ? obj.grid() : obj.grid;
+      for (let i = 0; i < grid.length; i += gridCols) {
+        let row = [];
+        let gridRow = typeof obj.gridRow === 'function' ? obj.gridRow(i) : obj.gridRow;
+        for (let j = i; j < i + gridCols; j++) {
+          if (grid[j]) {
+            row.push(grid[j]);
+          }
+        }
+        childs.push({
+          row: [...row],
+          ...gridRow
+        });
       }
-    };
-
-    if (size && onResize) {
-      gapAttrs[this.touch ? 'onTouchStart' : 'onMouseDown'] = e => {
-        this.so = {
-          pos: this.getClient(e),
-          onResize,
-          axis,
-          size,
-          dataId
-        };
-        this.eventHandler('mousemove', _jquery.default.proxy(this.mouseMove, this));
-        this.eventHandler('mouseup', _jquery.default.proxy(this.mouseUp, this));
-      };
+      obj.column = [...childs];
     }
-
-    if (swapId) {
+    let className = this.getClassName(pointer, isRoot, props, attrs);
+    let gapAttrs = getGapAttrs(obj, parent, props, dataId);
+    let gapHtml = parent && parent.gapHtml ? parent.gapHtml(obj, index) : '';
+    if (dragId !== undefined) {
       attrs.draggable = true;
-
       attrs.onDragStart = e => {
         let {
-          swapHandleClassName
+          dragHandleClassName,
+          onDragStart = () => {}
         } = this.props;
-
-        if (swapHandleClassName) {
-          if (!(0, _jquery.default)(e.target).hasClass(swapHandleClassName) && (0, _jquery.default)(e.target).parents('.' + swapHandleClassName).length === 0) {
+        if (dragHandleClassName) {
+          if (!$(e.target).hasClass(dragHandleClassName) && $(e.target).parents('.' + dragHandleClassName).length === 0) {
             return;
           }
         }
-
-        this.swapId = swapId;
+        onDragStart(dragId);
+        this.dragId = dragId;
       };
-
-      attrs.onDragOver = e => {
-        e.preventDefault();
-      };
-
+      attrs.onDragOver = e => e.preventDefault();
       attrs.onDrop = () => {
         let {
-          onSwap = () => {}
+          onSwap = () => {},
+          onDrop = () => {}
         } = this.props;
-
-        if (this.swapId === swapId) {
+        if (this.dragId === dragId) {
           return;
         }
-
-        onSwap(this.swapId, swapId);
-        this.swapId = false;
+        onSwap(this.dragId, dragId);
+        onDrop(dragId);
+        this.dragId = false;
       };
     }
-
-    return {
-      size,
-      flex,
-      childs,
-      style,
-      html,
-      dataId,
-      attrs: { ...Attrs,
-        ...attrs,
-        className,
-        'data-id': dataId
+    attrs = {
+      onClick,
+      ...attrs,
+      style: {
+        flex,
+        ...style
       },
-      gapAttrs
+      className,
+      'data-id': dataId
     };
-  }
-
-  getClient(e) {
-    return this.touch ? {
-      x: e.changedTouches[0].clientX,
-      y: e.changedTouches[0].clientY
-    } : {
-      x: e.clientX,
-      y: e.clientY
-    };
-  }
-
-  getHtml(obj, index, parentObj, isRoot) {
-    if (!obj || obj === null) {
-      return '';
+    if (props.egg) {
+      attrs.onClick = () => this.egg(props.egg);
     }
-
-    let {
-      show = true
-    } = obj;
-    let Show = typeof show === 'function' ? show() : show;
-    let parent = parentObj || {};
-
-    if (!Show) {
-      return null;
+    if (longTouch) {
+      attrs['ontouchstart' in document.documentElement ? 'onTouchStart' : 'onMouseDown'] = e => {
+        this.lt = dataId;
+        this[dataId + 'callback'] = longTouch;
+        this.timer();
+        eventHandler('mouseup', $.proxy(this.longTouchMouseUp, this));
+      };
     }
-
-    let {
-      size,
-      flex,
+    if (this.props.loading && html) {
+      html = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+        style: {
+          opacity: 0
+        }
+      }, html), /*#__PURE__*/React.createElement("div", {
+        className: "rvd-loading"
+      }));
+      attrs.onClick = undefined;
+    }
+    return {
       childs,
-      style,
       html,
       attrs,
-      gapAttrs
-    } = this.getProps(obj, index, parent, isRoot);
-
-    if (parentObj) {
-      flex = flex || 'none';
-    }
-
-    var result;
-
-    if (!childs.length) {
-      result = /*#__PURE__*/_react.default.createElement("div", _extends({}, attrs, {
-        style: { ...style,
-          flex
-        }
-      }), html);
-    } else {
-      let Style = {
-        flex: !size ? flex || 1 : undefined,
-        ...style
+      gapAttrs,
+      gapHtml
+    };
+  }
+  getLayout(obj, index, parent, isRoot) {
+    if (typeof obj === 'object' && typeof parent === 'object') {
+      obj.props = {
+        ...parent.props,
+        ...obj.props
       };
-      result = /*#__PURE__*/_react.default.createElement("div", _extends({}, attrs, {
-        style: Style
-      }), childs.map((o, i) => /*#__PURE__*/_react.default.createElement(_react.Fragment, {
-        key: i
-      }, this.getHtml(o, i, obj))));
     }
-
-    return /*#__PURE__*/_react.default.createElement(_react.Fragment, {
-      key: index
-    }, result, parent.gap !== undefined && /*#__PURE__*/_react.default.createElement("div", gapAttrs));
-  }
-
-  mouseMove(e) {
-    var {
-      rtl
+    let {
+      getLayout
     } = this.props;
-    var {
-      pos,
-      axis,
-      size,
-      dataId
-    } = this.so;
-    var client = this.getClient(e);
-    var offset = (client[axis] - pos[axis]) * (rtl ? -1 : 1);
-
-    if (offset % 24 !== 0) {
-      return;
+    if (!obj || obj === null || (typeof obj.show === 'function' ? obj.show() : obj.show) === false) {
+      return '';
     }
-
-    this.so.newSize = offset + size;
-    var panel = (0, _jquery.default)('[data-id="' + dataId + '"]');
-    panel.css({
-      [{
-        'x': 'width',
-        'y': 'height'
-      }[axis]]: this.so.newSize
-    });
+    if (getLayout) {
+      obj = getLayout(obj, parent);
+    }
+    let {
+      childs,
+      html,
+      attrs,
+      gapAttrs,
+      gapHtml = ''
+    } = this.getProps(obj, index, parent, isRoot);
+    return /*#__PURE__*/React.createElement(Fragment, {
+      key: index
+    }, /*#__PURE__*/React.createElement("div", attrs, childs.length ? childs.map((o, i) => /*#__PURE__*/React.createElement(Fragment, {
+      key: i
+    }, this.getLayout(o, i, obj, false))) : html), parent && (parent.gap !== undefined || parent.props && parent.props.gap !== undefined) && /*#__PURE__*/React.createElement("div", gapAttrs, gapHtml));
   }
-
-  mouseUp() {
-    this.eventHandler('mousemove', this.mouseMove, 'unbind');
-    this.eventHandler('mouseup', this.mouseUp, 'unbind');
-    var {
-      onResize,
-      newSize
-    } = this.so;
-    onResize(newSize);
+  egg({
+    callback = () => {},
+    count = 10
+  }) {
+    this.eggCounter++;
+    if (this.eggCounter >= count) {
+      callback();
+    }
+    clearTimeout(this.timeOut);
+    this.timeOut = setTimeout(() => this.eggCounter = 0, 500);
   }
-
+  longTouchMouseUp() {
+    eventHandler('mouseup', this.longTouchMouseUp, 'unbind');
+    clearInterval(this[this.lt + 'interval']);
+  }
+  timer() {
+    this.time = 0;
+    this[this.lt + 'interval'] = setInterval(() => {
+      this.time++;
+      if (this.time > 50) {
+        clearInterval(this[this.lt + 'interval']);
+        this[this.lt + 'callback']();
+      }
+    }, 10);
+  }
   render() {
     var {
       gap,
       layout
     } = this.props;
-    return this.getHtml(layout, 0, undefined, true);
+    return this.getLayout(layout, 0, undefined, true);
   }
-
 }
-
-exports.default = ReactVirtualDom;
 ReactVirtualDom.defaultProps = {
   gap: 0,
   layout: {}
 };
+export function RVDRemoveV(selector, callback) {
+  $(selector).animate({
+    opacity: 0
+  }, 100).animate({
+    height: 0,
+    padding: 0
+  }, 150, callback);
+}
+export function RVDRemoveH(selector, callback) {
+  $(selector).animate({
+    opacity: 0
+  }, 100).animate({
+    width: 0,
+    padding: 0
+  }, 150, callback);
+}
+export function RVDRemove(selector, callback) {
+  $(selector).animate({
+    opacity: 0
+  }, 200, callback);
+}
+function eventHandler(event, action, type = 'bind') {
+  event = 'ontouchstart' in document.documentElement ? {
+    mousemove: "touchmove",
+    mouseup: "touchend"
+  }[event] : event;
+  $(window).unbind(event, action);
+  if (type === 'bind') {
+    $(window).bind(event, action);
+  }
+}
+function getGapAttrs(obj, parent = {}, props = {}, dataId) {
+  let $$ = {
+    getClient(e) {
+      return 'ontouchstart' in document.documentElement ? {
+        x: e.changedTouches[0].clientX,
+        y: e.changedTouches[0].clientY
+      } : {
+        x: e.clientX,
+        y: e.clientY
+      };
+    },
+    mouseMove(e) {
+      var {
+        rtl
+      } = this.props;
+      var {
+        pos,
+        axis,
+        size,
+        dataId
+      } = this.so;
+      var client = this.getClient(e);
+      var offset = (client[axis] - pos[axis]) * (rtl ? -1 : 1);
+      if (offset % 24 !== 0) {
+        return;
+      }
+      this.so.newSize = offset + size;
+      var panel = $('[data-id="' + dataId + '"]');
+      panel.css({
+        [{
+          'x': 'width',
+          'y': 'height'
+        }[axis]]: this.so.newSize
+      });
+    },
+    mouseUp() {
+      eventHandler('mousemove', this.mouseMove, 'unbind');
+      eventHandler('mouseup', this.mouseUp, 'unbind');
+      var {
+        onResize,
+        newSize
+      } = this.so;
+      onResize(newSize);
+    },
+    getGap(obj, parent, dir) {
+      let gap = parent['gap' + dir] || parent.gap || (parent.props ? parent.props['gap' + dir] || parent.props.gap : undefined);
+      return typeof gap === 'function' ? gap(obj, parent) : gap;
+    },
+    getClassName() {
+      let className = RVDCLS.gap;
+      if (parent.gapAttrs && parent.gapAttrs.className) {
+        className += ' ' + parent.gapAttrs.className;
+      }
+      let hideClassName = getHideClassName(props);
+      return className + (hideClassName ? ' ' + hideClassName : '');
+    },
+    getGapAttrs() {
+      let {
+        size,
+        onResize
+      } = props;
+      let style = {},
+        axis;
+      if (parent.row) {
+        axis = 'x';
+        style.width = this.getGap(obj, parent, 'H');
+        if (size && onResize) {
+          style.cursor = 'col-resize';
+        }
+      } else if (parent.column || parent.grid) {
+        axis = 'y';
+        style.height = this.getGap(obj, parent, 'V');
+        if (size && onResize) {
+          style.cursor = 'row-resize';
+        }
+      } else {
+        return {};
+      }
+      if (parent.gapAttrs && parent.gapAttrs.style) {
+        style = {
+          ...style,
+          ...parent.gapAttrs.style
+        };
+      }
+      let gapAttrs = {
+        className: this.getClassName(),
+        style,
+        draggable: false,
+        onDragStart: e => {
+          e.preventDefault();
+          return false;
+        }
+      };
+      if (size && onResize) {
+        gapAttrs['ontouchstart' in document.documentElement ? 'onTouchStart' : 'onMouseDown'] = e => {
+          this.so = {
+            pos: this.getClient(e),
+            onResize,
+            axis,
+            size,
+            dataId
+          };
+          eventHandler('mousemove', $.proxy(this.mouseMove, this));
+          eventHandler('mouseup', $.proxy(this.mouseUp, this));
+        };
+      }
+      return gapAttrs;
+    }
+  };
+  return $$.getGapAttrs();
+}
+function getHideClassName(props) {
+  let hide_xs, hide_sm, hide_md, hide_lg, className;
+  if (props.show_xs) {
+    hide_xs = false;
+    hide_sm = true;
+    hide_md = true;
+    hide_lg = true;
+  }
+  if (props.hide_xs) {
+    hide_xs = true;
+  }
+  if (props.show_sm) {
+    hide_xs = true;
+    hide_sm = false;
+    hide_md = true;
+    hide_lg = true;
+  }
+  if (props.hide_sm) {
+    hide_sm = true;
+  }
+  if (props.show_md) {
+    hide_xs = true;
+    hide_sm = true;
+    hide_md = false;
+    hide_lg = true;
+  }
+  if (props.hide_md) {
+    hide_md = true;
+  }
+  if (props.show_lg) {
+    hide_xs = true;
+    hide_sm = true;
+    hide_md = true;
+    hide_lg = false;
+  }
+  if (props.hide_lg) {
+    hide_lg = true;
+  }
+  if (hide_xs) {
+    className += ' ' + RVDCLS.hidexs;
+  }
+  if (hide_sm) {
+    className += ' ' + RVDCLS.hidesm;
+  }
+  if (hide_md) {
+    className += ' ' + RVDCLS.hidemd;
+  }
+  if (hide_lg) {
+    className += ' ' + RVDCLS.hidelg;
+  }
+  return className;
+}

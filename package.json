@@ -1,6 +1,6 @@
 {
   "name": "react-virtual-dom",
-  "version": "3.0.2",
+  "version": "4.0.0",
   "description": "convert json to react html layout(virtual DOM)",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,7 @@
     "type": "git",
     "url": "git+https://github.com/mohammadFeiz/r-layout.git"
   },
-  "author": "mohammad sharif feiz",
+  "author": "mohammad sharif feiz feiz.ms@gmail.com",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/mohammadFeiz/r-layout/issues"
